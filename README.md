@@ -4,6 +4,7 @@ A Telegram bot that keeps track of your spending, earning and balance.
 
 ## Prerequisites
 
+### Modules
 ```
 requests
 pygsheets
