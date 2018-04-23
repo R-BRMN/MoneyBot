@@ -4,9 +4,9 @@ A Telegram bot that keeps track of your spending, earning and balance.
 
 ## Prerequisites
 
-Nothing yet
 ```
-Nothings
+requests
+pygsheets
 ```
 
 ### Installing
@@ -21,10 +21,6 @@ Nothings
 6. Download the client ID and save the .json file to your MoneyBot folder as "client_secret.json"
 
 You are now ready to run the app
-
-```
-Another one
-```
 
 ## Authors
 
