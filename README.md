@@ -19,9 +19,3 @@ Another one
 ## Authors
 
 R-BRMN
-
-cool
-
-this is nice
-
-crazy
