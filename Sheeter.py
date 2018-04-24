@@ -3,26 +3,67 @@ import datetime
 
 class Sheeter:
     """Sheeter is responsible for managing the spreadsheets on Google Drive.
+    Static class.
 
-    Attributes:
-        gsheets_client: A pygsheets instance associated with the Google account
-                        whose client_id credentials are in the client_secret json.
+    Parameters:
+        gsheets_client: The pygsheets client facing the Google spreadsheets.
     """
-    def __init__(self):
-        self.gsheets_client = pygsheets.authorize()
 
-    def sheet_exists(self, name):
-        """True or False depending on whether the spreadsheet exists.
+    @staticmethod
+    def initialize_gsheets():
+        """Approves the pygsheets client to work with the Google account whose
+        credentials are in the client_secret file.
         """
-        ssheet_list = self.gsheets_client.list_ssheets()
-        for ssheet in ssheets_list:
+        global gsheets_client
+        gsheets_client = pygsheets.authorize()
+
+    @staticmethod
+    def sheet_exist(name):
+        """Depends on whether the spreadsheet exists.
+
+        Returns: True / False
+        """
+        ssheet_list = gsheets_client.list_ssheets()
+        for ssheet in ssheet_list:
             if ssheet["name"] == name:
                 return True
         return False
 
-    def months_sheet_exists(self):
+    @staticmethod
+    def month_sheet_exist():
         """True or False depending on whether current's month spreadsheet exists.
         Spreadsheet name format is Month_YY.
+
+        Returns: True / False
         """
         curr_month = datetime.datetime.now().strftime("%B_%y")
-        return self.sheet_exists(curr_month)
+        return Sheeter.sheet_exist(curr_month)
+
+    @staticmethod
+    def get_sheet(name):
+        """Returns the spreadsheet for the param name
+
+        Returns: Spreadsheet object / None
+        """
+        if Sheeter.sheet_exist(name):
+            return gsheets_client.open(name)
+        return
+
+    @staticmethod
+    def create_sheet(name):
+        """Creates a spreadsheet with one workbook(Untitled1).
+
+        Returns: Spreadsheet
+        """
+        return gsheets_client.create(name)
+
+    @staticmethod
+    def get_month_sheet():
+        """Return this months spreadsheet object, whether it existed before or not.
+
+        Returns: Spreadsheet Object
+        """
+        curr_month = datetime.datetime.now().strftime("%B_%y")
+        if Sheeter.month_sheet_exist():
+            return Sheeter.get_sheet(curr_month)
+        return Sheeter.create_sheet(curr_month)
