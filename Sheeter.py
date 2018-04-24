@@ -50,20 +50,27 @@ class Sheeter:
         return
 
     @staticmethod
-    def create_sheet(name):
-        """Creates a spreadsheet with one workbook(Untitled1).
+    def create_sheet(name, first_worksheet=None):
+        """Creates a spreadsheet with one workbook(Sheet1 unless specified).
 
-        Returns: Spreadsheet
+        Returns: Spreadsheet object
         """
-        return gsheets_client.create(name)
+        sheet = gsheets_client.create(name)
+        if first_worksheet:
+                sheet.add_worksheet(first_worksheet) #TODO change add_worksheet to a local better method.
+                sheet.del_worksheet(sheet.worksheet_by_title("Sheet1"))
+        return sheet
+
 
     @staticmethod
     def get_month_sheet():
         """Return this months spreadsheet object, whether it existed before or not.
 
-        Returns: Spreadsheet Object
+        Returns: Spreadsheet object
         """
         curr_month = datetime.datetime.now().strftime("%B_%y")
         if Sheeter.month_sheet_exist():
             return Sheeter.get_sheet(curr_month)
         return Sheeter.create_sheet(curr_month)
+
+#te
