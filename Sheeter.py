@@ -73,4 +73,18 @@ class Sheeter:
             return Sheeter.get_sheet(curr_month)
         return Sheeter.create_sheet(curr_month)
 
+    @staticmethod
+    def workbook_exist(spreadsheet_name, workbook_name):
+        """Checks if a workbook exists in a spreadsheet.
+
+        Returns: True / False
+        """
+        if Sheeter.sheet_exist(spreadsheet_name):
+            try:
+                Sheeter.get_sheet(spreadsheet_name).worksheets(sheet_property='title', value=workbook_name)
+                return True
+            except pygsheets.exceptions.WorksheetNotFound:
+                pass
+        return False
+
 #test
